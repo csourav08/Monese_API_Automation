@@ -8,7 +8,7 @@ import json
 fake = Faker()
 
 BASE_URL = 'https://gorest.co.in/public/v2/users/'
-ACCESS_TOKEN = 'a6feb1e9909e836edaa64ebb91544d694441cb09f1bc0940fe3f11f568aa191f'
+ACCESS_TOKEN = ''
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -252,7 +252,7 @@ def make_post_request_with_validation():
     headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer a6feb1e9909e836edaa64ebb91544d694441cb09f1bc0940fe3f11f568aa191f'
+        'Authorization': 'Bearer '
     }
 
     url = 'https://gorest.co.in/public/v2/posts'
