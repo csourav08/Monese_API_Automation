@@ -2,7 +2,7 @@ import pytest
 import json
 import logging
 from conftest import test_updated_credentials, test_validate_new_user, test_validating_same_user_creds_updated, \
-    test_patch_invalid_email
+    test_patch_invalid_email,make_post_request_with_validation
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
@@ -20,6 +20,8 @@ logger = logging.getLogger()
                          "7) Delete the USER\n"
                          "8) Verify correct USER is deleted"
                          "9) Negative-scenario try to update USER with INVALID email format"
+                         "10) Creating POSTS by making reuqets to https://gorest.co.in/public/v2/posts'   "
+                         "11) Validating POST to https://gorest.co.in/public/v2/posts' will fail if parameters missing"
                          )
 def test_create_new_user(test_data):
     logger.info("User Data:")
@@ -77,8 +79,6 @@ def test_negative_invalid_patch_request(test_patch_invalid_email):
     assert not str(test_patch_invalid_email.status_code).startswith('2')
 
 
-######################
-
 @pytest.mark.usefixtures("make_post_request_to_posts_endpoint")
 def test_post_request_success(make_post_request_to_posts_endpoint):
     response = make_post_request_to_posts_endpoint
@@ -88,5 +88,12 @@ def test_post_request_success(make_post_request_to_posts_endpoint):
     assert response_data['user_id'] == 5202764
     assert response_data['title'] == "Sourav"
     assert response_data['body'] == "Test task for Monese"
+
+@pytest.mark.usefixtures("make_post_request_with_validation")
+def test_post_request_validation(make_post_request_with_validation):
+    response = make_post_request_with_validation
+    assert response.status_code == 422
+
+
 
 
