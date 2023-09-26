@@ -8,7 +8,7 @@ import json
 fake = Faker()
 
 BASE_URL = 'https://gorest.co.in/public/v2/users/'
-ACCESS_TOKEN = ''
+ACCESS_TOKEN = 'a6feb1e9909e836edaa64ebb91544d694441cb09f1bc0940fe3f11f568aa191f'
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -208,4 +208,51 @@ def test_patch_invalid_email(test_data):
     logger.debug(f"Response data: {response.text}")
 
     return response
+
+###################
+
+
+@pytest.fixture(scope="function")
+def make_post_request_to_posts_endpoint():
+    fake = Faker()
+    user_id = 5202764
+    message = "Hello Monese test"
+    title = "Sourav"
+    body = "Test task for Monese"
+
+    data = {
+        'user_id': user_id,
+        'message': message,
+        'title': title,
+        'body': body
+    }
+
+    headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer a6feb1e9909e836edaa64ebb91544d694441cb09f1bc0940fe3f11f568aa191f'
+    }
+
+    url = 'https://gorest.co.in/public/v2/posts'
+
+    # Convert the data to JSON format
+    data_json = json.dumps(data)
+
+    # Send the POST request
+    response = requests.post(url, headers=headers, data=data_json)
+
+    # Log the request and response information
+    logger.debug(f"POST request to {url}")
+    logger.debug(f"Headers: {headers}")
+    logger.debug(f"Request data: {data_json}")
+    logger.debug(f"Response status code: {response.status_code}")
+    logger.debug(f"Response data: {response.text}")
+
+    return response
+
+
+
+
+
+
 

@@ -1,7 +1,8 @@
 import pytest
 import json
 import logging
-from conftest import test_updated_credentials, test_validate_new_user, test_validating_same_user_creds_updated,test_patch_invalid_email
+from conftest import test_updated_credentials, test_validate_new_user, test_validating_same_user_creds_updated, \
+    test_patch_invalid_email
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
@@ -36,12 +37,15 @@ def test_confirm_the_new_user_created(test_data, test_validate_new_user):
     assert response_data["gender"] is not None
     return response_data
 
+
 def test_create_todo_for_user(test_create_todo, test_data):
     user_id, _ = test_data
+
 
 def test_confirm_user_todos_created(test_create_todo, test_get_user_todos):
     post_response = test_create_todo
     get_response = test_get_user_todos
+
 
 def test_update_user_credentials(test_updated_credentials):
     updated_data = test_updated_credentials
@@ -67,10 +71,22 @@ def test_delete_user(test_data, test_delete_user):
 def test_verify_deleted_user(test_data, test_verify_deleted_user):
     user_id, _ = test_data
 
+
 @pytest.mark.usefixtures("test_patch_invalid_email")
 def test_negative_invalid_patch_request(test_patch_invalid_email):
     assert not str(test_patch_invalid_email.status_code).startswith('2')
 
 
+######################
+
+@pytest.mark.usefixtures("make_post_request_to_posts_endpoint")
+def test_post_request_success(make_post_request_to_posts_endpoint):
+    response = make_post_request_to_posts_endpoint
+    assert response.status_code == 201
+    response_data = json.loads(response.text)
+    assert 'user_id' in response_data
+    assert response_data['user_id'] == 5202764
+    assert response_data['title'] == "Sourav"
+    assert response_data['body'] == "Test task for Monese"
 
 
